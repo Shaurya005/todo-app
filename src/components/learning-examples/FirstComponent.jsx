@@ -21,3 +21,11 @@ export class SecondComponent extends Component {
       );
     }
   }
+
+// function SecondComponent() {
+//     return (
+//       <div className="firstComponent">
+//         Second Component
+//       </div>
+//     );
+// }
