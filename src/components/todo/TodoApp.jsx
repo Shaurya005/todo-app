@@ -76,9 +76,18 @@ class LoginComponent extends Component {
     */
     render() {
         return (
+            /*
+            In step, I'll show you a tip about how you can simplify this kind of component creation for simple ifs.
+            All that we have is a simple if, and we had to create a functional component to show this. So we can have work around for this using AND condition of Javascript as 
+            html gets ultimately converted to javascript using Babel so second expression of html will be displayed only if first expression is true.
+
+            If you wanted to show a specific div on a specific condition, then you can actually use this and operator &&.
+            */
             <div>
-               <ShowInvalidCredentials hasLoginFailed={this.state.hasLoginFailed} />
-               <ShowLoginSuccesMessage showSuccessMessage={this.state.showSuccessMessage} />
+               {/* <ShowInvalidCredentials hasLoginFailed={this.state.hasLoginFailed} /> */}
+               {/* <ShowLoginSuccesMessage showSuccessMessage={this.state.showSuccessMessage} /> */}
+               { this.state.hasLoginFailed && <div>Invalid Credentials</div>}
+               { this.state.showSuccessMessage && <div>Login Succesful</div> }
                User Name: <input type="text" name="username" value={this.state.username} onChange={this.handleChange}/>
                Password: <input type="password" name="password" value={this.state.password} onChange={this.handleChange}/>
                <button onClick={this.loginClicked}>Login</button>
@@ -100,21 +109,6 @@ class LoginComponent extends Component {
         Whenever you make a change in here, state is updated. When the state is updated, the changes are reflected back in the element. 
         */
     }
-}
-
-function ShowInvalidCredentials(props) {
-    if (props.hasLoginFailed) 
-        return <div>Invalid Credentials</div>
-    return null
-}
-
-function ShowLoginSuccesMessage(props) {
-    if(props.showSuccessMessage) {
-        return (
-            <div>Login Succesful</div>
-            );
-    }
-    return null
 }
 
 export default TodoApp
