@@ -18,41 +18,70 @@ class LoginComponent extends Component {
 
         this.state = {
             username: 'in28minutes',
-            password: 'password'
+            password: '',
+            hasLoginFailed: false,
+            showSuccessMessage: false
         }
 
-        this.handleUsernameChange = this.handleUsernameChange.bind(this);
-        this.handlePasswordChange = this.handlePasswordChange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.loginClicked = this.loginClicked.bind(this);
+    }
+
+    loginClicked() {
+        if(this.state.username==='in28minutes' && this.state.password==='dummy') {
+            console.log("Successful")
+            this.setState({showSuccessMessage: true})
+            this.setState({hasLoginFailed: false})
+        }
+        else {
+            console.log("Failed")
+            this.setState({showSuccessMessage: false, hasLoginFailed: true})
+        }
     }
 
     // So if you talk in terms of HTML, any action that you perform in the button - when you do a click on it, you're generate a click event, in React terms, actually this is something called a synthetic event.
-    handleUsernameChange(event) {
-        console.log(event)
+    handleChange(event) { // This is a generic method which can handle all changes for any text element.
+        console.log(this.state)
 
         this.setState(
-            {username: event.target.value} // target.value gives the value which is being changed.
-        )
-    }
+            {[event.target.name]: event.target.value} // target.value gives the value which is being changed.
+            /*
+            What we are doing in here within the curly braces, it's creating an object. When we are creating an object
 
-    handlePasswordChange(event) {
-        console.log(event)
-
-        this.setState(
-            {password: event.target.value} // target.value gives the value which is being changed.
+            The left hand side is the name of the object member variable, and that is typically expected to be a constant value. 
+            You cannot put a variable in there. If I want to use a variable in there. What I would need to do is put it within its square bracket.
+            */
         )
     }
 
     /*
+    Here we had to create two change events for handling the changes, in the two elements which are present in here.
+    What if the form has 10 elements, 15, or more elements. You cannot keep writing events like this right? So what can we do in that kind of scenarios?
+
+    In handleUsernameChange(event), let's see what would happen if I console.log event.target.name. So you can see that it's printing user name which is the name of the field
+    which is changing. So what I can do is actually instead of hard coding user name in here, we can use event.target.name.
+
+    So what we can do now is instead of actually calling this handleUsernameChange, call this handleChange.
+    So for any change of event what we want to do, is call this. The thing is, it can work both with user name and the password field.
+
+    Because here we are not hard coding the name of the element in this state, which is changing. One of the important things now, is whatever have in the state  should match 
+    with whatever we have in the form element names. So the name of this form element is user name, so instead also we should use user name. Same with password as well.
+    So this is now generic to handleChange, and it will only work when I have the same names for form elements as well as inside this state.
+    */
+
+    /*
     What is a controlled field? A controlled component at the larger picture is something in which the entire change in the UI is dictated by the state.
-    So whenever some change happen state is updated, and when the state is updated, The view is updated.
+    So whenever some change happen state is updated, and when the state is updated, the view is updated.
     Back to this specific thing is called a controlled component. The source of truth is the state inside the React component.
     */
     render() {
         return (
             <div>
-               User Name: <input type="text" name="username" value={this.state.username} onChange={this.handleUsernameChange}/>
-               Password: <input type="password" name="password" value={this.state.password} onChange={this.handlePasswordChange}/>
-               <button>Login</button>
+               <ShowInvalidCredentials hasLoginFailed={this.state.hasLoginFailed} />
+               <ShowLoginSuccesMessage showSuccessMessage={this.state.showSuccessMessage} />
+               User Name: <input type="text" name="username" value={this.state.username} onChange={this.handleChange}/>
+               Password: <input type="password" name="password" value={this.state.password} onChange={this.handleChange}/>
+               <button onClick={this.loginClicked}>Login</button>
             </div>
         )
         /*
@@ -71,6 +100,21 @@ class LoginComponent extends Component {
         Whenever you make a change in here, state is updated. When the state is updated, the changes are reflected back in the element. 
         */
     }
+}
+
+function ShowInvalidCredentials(props) {
+    if (props.hasLoginFailed) 
+        return <div>Invalid Credentials</div>
+    return null
+}
+
+function ShowLoginSuccesMessage(props) {
+    if(props.showSuccessMessage) {
+        return (
+            <div>Login Succesful</div>
+            );
+    }
+    return null
 }
 
 export default TodoApp
