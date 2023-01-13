@@ -90,8 +90,9 @@ class CounterButton extends Component
       <div className="counter">
         {/* <button onClick={increament()}>+1</button> Here it's actually calling the function on the first tiime page loads so we need to just pass the function reference without (). */}
         {/* <button onClick={increament}>+1</button> */}
-        <button onClick={this.increament}>+ {this.props.by}</button> {/*As we want to call increament method of Counter class and not global method, so we need to use this.increment for its method reference. */}
-        <button onClick={this.decrement}>- {this.props.by}</button> 
+        <button onClick={() => this.props.increamentMethod(this.props.by)}>+ {this.props.by}</button> {/*As we want to call increament method of Counter class and not global method, so we need to use this.increment for its method reference. */}
+        {/* <button onClick={this.props.decrementMethod(this.props.by)}>- {this.props.by}</button> Passing params like this will not be working here.*/}
+        <button onClick={() => this.props.decrementMethod(this.props.by)}>- {this.props.by}</button> 
         {/*<span className='count'
         style= {{fontSize : "50px", padding: "15px 30px"}}> We need to pass javascript object here, it cannot be simple string and inside javascript object, we can not have hyphen. */}
         {/* style= {style}> We can also define a variable for this styling above and use it for inline css styling.
@@ -99,15 +100,6 @@ class CounterButton extends Component
         {/* For mentioning javascript variable or method in between JSX html, we need to mention it inside parenthesis */}
       </div>
     );
-  }
-
- increament = () => { // Made it as lamda function to avoid binding method to class.
-    this.props.increamentMethod(this.props.by)
-    console.log('increament')
-  }
-
-  decrement = () => {
-    this.props.decrementMethod(this.props.by)
   }
 }
 
