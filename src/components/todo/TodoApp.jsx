@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom'
 import withNavigation from '../todo/WithNavigation'
 import withParams from './WithParams';
 
@@ -15,6 +15,7 @@ class TodoApp extends Component {
                     <Route path="/" element={<LoginComponent />} />
                     <Route path="/login" element={<LoginComponentWithNavigation />} />
                     <Route path="/welcome/:name" element={<WelcomeComponentWithParams />} />
+                    <Route path="/todos" element={<ListTodosComponent/>} />
                     <Route path="*" element={<ErrorComponent />} />
                     {/* We want to show the ErrorComponent when none of these components match that. You need to pass * to the path in Route. */}
                 </Routes>
@@ -44,8 +45,70 @@ In the previous step we hard coded in28minutes in the WelcomeComponent, and that
 How can we pass the fact that in28minutes has logged in from from the LoginComponent to the Welcome Component.
 */
 class WelcomeComponent extends Component {
+    /* 
+    So we need to go to the WelcomeComponent and add the link in there to go to todos component.
+    Let's try defining an a href, and say I want to route to todo. So a is typically the usual HTML way of doing it. I would go to the welcome/in28minutes and over here,
+    If I click this link on here, you'd see that the entire page gets refreshed. So you can see that the complete page gets refreshed.
+    However you'd see that when I go from login to welcome page and the entire page is not refreshed.
+    Only the specific part of the page is refreshed. You can actually clearly see this once we add the menu and the footer later. For now.
+
+    The most important thing to note is the fact that when you actually add a normal a href, the entire page gets refreshed. 
+    And when you're doing single page applications, you don't want the entire page to get refreshed, and that's where Link comes in. 
+    So you can add a link where only that specific component will be replaced, with whatever is pointed to by the specific component. 
+    The attribute name is not href, it "to" here i.e. <Link to>
+    */
     render() {
-        return <div> Welcome {this.props.params.name} </div>
+        // How can we add a link around here. So we need to use something called Link, which also is defined in the react-router-dom.
+        return <div> Welcome {this.props.params.name}. You can manage your todos <Link to='/todos'>here</Link> </div>
+    }
+}
+
+class ListTodosComponent extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            todos: [
+                {id: 1, description: 'Learn to Dance', done: false, targetDate: new Date()},
+                {id: 2, description: 'Become an expert at React', done: false, targetDate: new Date()},
+                {id: 3, description: 'Visit India', done: false, targetDate: new Date()}
+            ]
+        }
+    }
+    
+    render() {
+        return (
+            <div>
+                <h1>List Todos</h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>description</th>
+                            <th>Target Date</th>
+                            <th>Is Completed</th>
+                        </tr>
+                    </thead>
+                    {/* In React, whenever you would want to loop around the list and display them is something similar to this.
+                    What we'll do is use something called a map function ,where you can actually map each of these todos to something else. So I can see todos.map
+                    So for each todo map it to something else. So I can say take each todo, and map it to just the description of the todo.
+                    This would print array with only the descriptions. I can take the todos and map it to only id's. todo.id. It prints only the id's. */}
+                    <tbody>
+                        {
+                            this.state.todos.map (
+                                todo =>
+                                    <tr>
+                                        <td>{todo.id}</td>
+                                        <td>{todo.description}</td>
+                                        <td>{todo.targetDate.toString()}</td>
+                                        <td>{todo.done.toString()}</td>
+                                    </tr>
+                            )
+                        }
+                    </tbody>
+                </table>
+            </div>
+        )
     }
 }
 
