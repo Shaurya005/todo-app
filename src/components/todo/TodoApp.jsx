@@ -1,20 +1,22 @@
 import React, {Component} from 'react'
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import withNavigation from '../todo/WithNavigation'
+import withParams from './WithParams';
 
 class TodoApp extends Component {
-
-    
     render() {
         const LoginComponentWithNavigation = withNavigation(LoginComponent);
+        const WelcomeComponentWithParams = withParams(WelcomeComponent);
 
         return (
         <div className='TodoApp'>
             <Router>
                 <Routes>
-                    <Route path="/" element={<LoginComponent />}/>
+                    <Route path="/" element={<LoginComponent />} />
                     <Route path="/login" element={<LoginComponentWithNavigation />} />
-                    <Route path="/welcome" element={<WelcomeComponent />}/>
+                    <Route path="/welcome/:name" element={<WelcomeComponentWithParams />} />
+                    <Route path="*" element={<ErrorComponent />} />
+                    {/* We want to show the ErrorComponent when none of these components match that. You need to pass * to the path in Route. */}
                 </Routes>
             </Router>
         </div>
@@ -36,10 +38,24 @@ So, you see that all of them would be downloaded into the node modules and at th
 Before we can actually use it, we would need to import a few classes from react-router-dom. Things that we would want to import are BrowserRouter and Route from react-router-dom. 
 I'll rename BrowserRouter as Router because that's typically how it is used. We can use the router is using <Router> inside the place where we would want to render it.
 */
+
+/*
+In the previous step we hard coded in28minutes in the WelcomeComponent, and that's not really good.
+How can we pass the fact that in28minutes has logged in from from the LoginComponent to the Welcome Component.
+*/
 class WelcomeComponent extends Component {
     render() {
-        return <div> Welcome in28minutes </div>
+        return <div> Welcome {this.props.params.name} </div>
     }
+}
+
+/*
+So somebody comes in and type some random url and he does not know what's happening in here. To prevent that,
+we need to add in a component called ErrorComponent.
+*/
+
+function ErrorComponent() {
+    return <div>An Error Occurred. Don't know what to do! Contact support.</div>
 }
 
 class LoginComponent extends Component {
@@ -61,7 +77,7 @@ class LoginComponent extends Component {
 
     loginClicked() {
         if(this.state.username==='in28minutes' && this.state.password==='dummy') {
-            this.props.navigate(`/welcome`)
+            this.props.navigate(`/welcome/${this.state.username}`)
             // console.log("Successful")
             // this.setState({showSuccessMessage: true})
             // this.setState({hasLoginFailed: false})
