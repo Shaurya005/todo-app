@@ -1,12 +1,44 @@
 import React, {Component} from 'react'
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import withNavigation from '../todo/WithNavigation'
 
 class TodoApp extends Component {
+
+    
     render() {
+        const LoginComponentWithNavigation = withNavigation(LoginComponent);
+
         return (
         <div className='TodoApp'>
-            <LoginComponent/>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<LoginComponent />}/>
+                    <Route path="/login" element={<LoginComponentWithNavigation />} />
+                    <Route path="/welcome" element={<WelcomeComponent />}/>
+                </Routes>
+            </Router>
         </div>
         )
+        /*
+        With earlier versions of React, "A Router may have only one child element." So, one of the things is, inside the router, you can only have one child element, just like in JSX.
+        So we must had to inclue them within React fragments but with new version of React A <Route> is only ever to be used as the child of <Routes> element, never rendered directly. Wrap your <Route> in a <Routes>.
+        */
+    }
+}
+
+/*
+The first thing that I would need to do to be able to use the router is, actually add it to our project. React is just the view library, it does not come with all the 
+features to build a real web application and that's where React Router comes in and gives us the features to route from one page to another.
+
+npm add react-router-dom should download the reactor-router-dom and all its transitive dependencies including React Router.
+So, you see that all of them would be downloaded into the node modules and at the end of it, you would also see that it is added into the package.json as a dependency.
+
+Before we can actually use it, we would need to import a few classes from react-router-dom. Things that we would want to import are BrowserRouter and Route from react-router-dom. 
+I'll rename BrowserRouter as Router because that's typically how it is used. We can use the router is using <Router> inside the place where we would want to render it.
+*/
+class WelcomeComponent extends Component {
+    render() {
+        return <div> Welcome in28minutes </div>
     }
 }
 
@@ -29,9 +61,10 @@ class LoginComponent extends Component {
 
     loginClicked() {
         if(this.state.username==='in28minutes' && this.state.password==='dummy') {
-            console.log("Successful")
-            this.setState({showSuccessMessage: true})
-            this.setState({hasLoginFailed: false})
+            this.props.navigate(`/welcome`)
+            // console.log("Successful")
+            // this.setState({showSuccessMessage: true})
+            // this.setState({hasLoginFailed: false})
         }
         else {
             console.log("Failed")
