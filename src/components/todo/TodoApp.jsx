@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom'
 import withNavigation from '../todo/WithNavigation'
 import withParams from './WithParams';
+import WelcomeComponent from './WelcomeComponent';
 
 class TodoApp extends Component {
     render() {
@@ -41,29 +42,6 @@ So, you see that all of them would be downloaded into the node modules and at th
 Before we can actually use it, we would need to import a few classes from react-router-dom. Things that we would want to import are BrowserRouter and Route from react-router-dom. 
 I'll rename BrowserRouter as Router because that's typically how it is used. We can use the router is using <Router> inside the place where we would want to render it.
 */
-
-/*
-In the previous step we hard coded in28minutes in the WelcomeComponent, and that's not really good.
-How can we pass the fact that in28minutes has logged in from from the LoginComponent to the Welcome Component.
-*/
-class WelcomeComponent extends Component {
-    /* 
-    So we need to go to the WelcomeComponent and add the link in there to go to todos component.
-    Let's try defining an a href, and say I want to route to todo. So a is typically the usual HTML way of doing it. I would go to the welcome/in28minutes and over here,
-    If I click this link on here, you'd see that the entire page gets refreshed. So you can see that the complete page gets refreshed.
-    However you'd see that when I go from login to welcome page and the entire page is not refreshed.
-    Only the specific part of the page is refreshed. You can actually clearly see this once we add the menu and the footer later. For now.
-
-    The most important thing to note is the fact that when you actually add a normal a href, the entire page gets refreshed. 
-    And when you're doing single page applications, you don't want the entire page to get refreshed, and that's where Link comes in. 
-    So you can add a link where only that specific component will be replaced, with whatever is pointed to by the specific component. 
-    The attribute name is not href, it "to" here i.e. <Link to>
-    */
-    render() {
-        // How can we add a link around here. So we need to use something called Link, which also is defined in the react-router-dom.
-        return <div> Welcome {this.props.params.name}. You can manage your todos <Link to='/todos'>here</Link> </div>
-    }
-}
 
 class HeaderComponent extends Component {
     render() {
@@ -173,7 +151,7 @@ class LoginComponent extends Component {
     loginClicked() {
         if(this.state.username==='in28minutes' && this.state.password==='dummy') {
             this.props.navigate(`/welcome/${this.state.username}`)
-            // console.log("Successful")
+            console.log("Successful")
             // this.setState({showSuccessMessage: true})
             // this.setState({hasLoginFailed: false})
         }
