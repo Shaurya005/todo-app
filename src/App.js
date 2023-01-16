@@ -6,6 +6,7 @@ import Counter from './components/counter/Counter';
 import TodoApp from './components/todo/TodoApp';
 
 import './App.css';
+import './bootstrap.css';
  
 
 // A class component extends a React class called Component.

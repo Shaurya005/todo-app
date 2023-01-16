@@ -11,6 +11,7 @@ class TodoApp extends Component {
         return (
         <div className='TodoApp'>
             <Router>
+                <HeaderComponent/>
                 <Routes>
                     <Route path="/" element={<LoginComponent />} />
                     <Route path="/login" element={<LoginComponentWithNavigation />} />
@@ -19,6 +20,7 @@ class TodoApp extends Component {
                     <Route path="*" element={<ErrorComponent />} />
                     {/* We want to show the ErrorComponent when none of these components match that. You need to pass * to the path in Route. */}
                 </Routes>
+                <FooterComponent/>
             </Router>
         </div>
         )
@@ -60,6 +62,36 @@ class WelcomeComponent extends Component {
     render() {
         // How can we add a link around here. So we need to use something called Link, which also is defined in the react-router-dom.
         return <div> Welcome {this.props.params.name}. You can manage your todos <Link to='/todos'>here</Link> </div>
+    }
+}
+
+class HeaderComponent extends Component {
+    render() {
+        return (
+            <header>
+                <nav className="navbar navbar-expand-md navbar-dark bg-dark">
+                    <div><a href="http://www.in28minutes.com" className='navbar-brand'>in28minutes</a></div>
+                    <ul className="navbar-nav">
+                        <li><Link className='nav-link' to="/welcome/in28minutes">Home</Link></li>
+                        <li><Link className='nav-link' to="/todos">Todos</Link></li>
+                    </ul>
+                    <ul className="navbar-nav navbar-collapse justify-content-end">
+                        <li><Link className='nav-link' to="/login">Login</Link></li>
+                        <li><Link className='nav-link' to="/logout">Logout</Link></li>
+                    </ul>
+                </nav>
+            </header>
+        )
+    }
+}
+
+class FooterComponent extends Component {
+    render() {
+        return (
+            <div>                
+                 <hr/> Footer
+            </div>
+        )
     }
 }
 
