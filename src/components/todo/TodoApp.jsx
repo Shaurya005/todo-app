@@ -11,20 +11,20 @@ class TodoApp extends Component {
         const WelcomeComponentWithParams = withParams(WelcomeComponent);
 
         return (
-        <div className='TodoApp'>
-            <Router>
-                <HeaderComponent/>
-                <Routes>
-                    <Route path="/" element={<LoginComponent />} />
-                    <Route path="/login" element={<LoginComponentWithNavigation />} />
-                    <Route path="/welcome/:name" element={<WelcomeComponentWithParams />} />
-                    <Route path="/todos" element={<ListTodosComponent/>} />
-                    <Route path="*" element={<ErrorComponent />} />
-                    {/* We want to show the ErrorComponent when none of these components match that. You need to pass * to the path in Route. */}
-                </Routes>
-                <FooterComponent/>
-            </Router>
-        </div>
+            <div className='TodoApp'>
+                <Router>
+                    <HeaderComponent/>
+                    <Routes>
+                        <Route path="/" element={<LoginComponent />} />
+                        <Route path="/login" element={<LoginComponentWithNavigation />} />
+                        <Route path="/welcome/:name" element={<WelcomeComponentWithParams />} />
+                        <Route path="/todos" element={<ListTodosComponent/>} />
+                        <Route path="*" element={<ErrorComponent />} />
+                        {/* We want to show the ErrorComponent when none of these components match that. You need to pass * to the path in Route. */}
+                    </Routes>
+                    <FooterComponent/>
+                </Router>
+            </div>
         )
         /*
         With earlier versions of React, "A Router may have only one child element." So, one of the things is, inside the router, you can only have one child element, just like in JSX.
@@ -104,8 +104,8 @@ class LoginComponent extends Component {
 
     loginClicked() {
         if(this.state.username==='in28minutes' && this.state.password==='dummy') {
+            console.log("Successful with username - " + this.state.username)
             this.props.navigate(`/welcome/${this.state.username}`)
-            console.log("Successful")
             // this.setState({showSuccessMessage: true})
             // this.setState({hasLoginFailed: false})
         }
