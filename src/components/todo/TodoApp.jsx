@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom'
 import withNavigation from '../todo/WithNavigation'
 import withParams from './WithParams';
 import WelcomeComponent from './WelcomeComponent';
+import ListTodosComponent from './ListTodoComponent';
 
 class TodoApp extends Component {
     render() {
@@ -73,54 +74,7 @@ class FooterComponent extends Component {
     }
 }
 
-class ListTodosComponent extends Component {
-    constructor(props) {
-        super(props)
 
-        this.state = {
-            todos: [
-                {id: 1, description: 'Learn to Dance', done: false, targetDate: new Date()},
-                {id: 2, description: 'Become an expert at React', done: false, targetDate: new Date()},
-                {id: 3, description: 'Visit India', done: false, targetDate: new Date()}
-            ]
-        }
-    }
-    
-    render() {
-        return (
-            <div>
-                <h1>List Todos</h1>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>id</th>
-                            <th>description</th>
-                            <th>Target Date</th>
-                            <th>Is Completed</th>
-                        </tr>
-                    </thead>
-                    {/* In React, whenever you would want to loop around the list and display them is something similar to this.
-                    What we'll do is use something called a map function ,where you can actually map each of these todos to something else. So I can see todos.map
-                    So for each todo map it to something else. So I can say take each todo, and map it to just the description of the todo.
-                    This would print array with only the descriptions. I can take the todos and map it to only id's. todo.id. It prints only the id's. */}
-                    <tbody>
-                        {
-                            this.state.todos.map (
-                                todo =>
-                                    <tr>
-                                        <td>{todo.id}</td>
-                                        <td>{todo.description}</td>
-                                        <td>{todo.targetDate.toString()}</td>
-                                        <td>{todo.done.toString()}</td>
-                                    </tr>
-                            )
-                        }
-                    </tbody>
-                </table>
-            </div>
-        )
-    }
-}
 
 /*
 So somebody comes in and type some random url and he does not know what's happening in here. To prevent that,
