@@ -33,7 +33,8 @@ class WelcomeComponent extends Component
     render() {
         // How can we add a link around here. So we need to use something called Link, which also is defined in the react-router-dom.
         return  <>
-                    <div> 
+                    <h1>Welcome!</h1>
+                    <div className='container'> 
                         Welcome {this.props.params.name}. You can manage your todos <Link to='/todos'>here</Link>
                     </div>
                     <div className='container'>

@@ -19,6 +19,7 @@ class TodoApp extends Component {
                         <Route path="/login" element={<LoginComponentWithNavigation />} />
                         <Route path="/welcome/:name" element={<WelcomeComponentWithParams />} />
                         <Route path="/todos" element={<ListTodosComponent/>} />
+                        <Route path="/logout" element={<LogoutComponent/>} />
                         <Route path="*" element={<ErrorComponent />} />
                         {/* We want to show the ErrorComponent when none of these components match that. You need to pass * to the path in Route. */}
                     </Routes>
@@ -67,8 +68,21 @@ class HeaderComponent extends Component {
 class FooterComponent extends Component {
     render() {
         return (
+            <footer className='footer'>
+                <span className='text-muted'>All Rights reserved 2018 @in28minutes</span>
+            </footer>
+        )
+    }
+}
+
+class LogoutComponent extends Component {
+    render() {
+        return (
             <div>                
-                 <hr/> Footer
+                <h1>You are logged out</h1>
+                <div className='container'>
+                    Thank You for using our application
+                </div>
             </div>
         )
     }
@@ -160,13 +174,16 @@ class LoginComponent extends Component {
             If you wanted to show a specific div on a specific condition, then you can actually use this and operator &&.
             */
             <div>
+               <h1>Login</h1>
+               <div className='container'>
                {/* <ShowInvalidCredentials hasLoginFailed={this.state.hasLoginFailed} /> */}
                {/* <ShowLoginSuccesMessage showSuccessMessage={this.state.showSuccessMessage} /> */}
-               { this.state.hasLoginFailed && <div>Invalid Credentials</div>}
+               { this.state.hasLoginFailed && <div className='alert alert-warning'>Invalid Credentials</div>}
                { this.state.showSuccessMessage && <div>Login Succesful</div> }
                User Name: <input type="text" name="username" value={this.state.username} onChange={this.handleChange}/>
                Password: <input type="password" name="password" value={this.state.password} onChange={this.handleChange}/>
-               <button onClick={this.loginClicked}>Login</button>
+               <button className='btn btn-success' onClick={this.loginClicked}>Login</button>
+               </div>
             </div>
         )
         /*
