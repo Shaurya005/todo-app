@@ -19,10 +19,15 @@ class AuthenticationService {
         if (user === null) return false;
         return true;
     }
+
+    getLoggedInUserName() {
+        let user = sessionStorage.getItem('authenticatedUser')
+        if (user === null) return '';
+        return user;
+    }
 }
 
-// For React Components we export the class directly. For Helper services, we export an instrance of the class - an object.
-export default new AuthenticationService
+export default new AuthenticationService // For React Components we export the class directly. For Helper services, we export an instrance of the class - an object.
 
 /*
 Now how do we track if a user has logged in or not? One of the options available to track whether a user has logged in or not, is session storage.
