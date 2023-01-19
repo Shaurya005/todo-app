@@ -4,22 +4,37 @@ import withNavigation from '../todo/WithNavigation'
 import withParams from './WithParams';
 import WelcomeComponent from './WelcomeComponent';
 import ListTodosComponent from './ListTodoComponent';
+import AuthenticationService from './AuthenticationService';
+import AuthenticatedRoute from './AuthenticatedRoute';
 
 class TodoApp extends Component {
     render() {
         const LoginComponentWithNavigation = withNavigation(LoginComponent);
         const WelcomeComponentWithParams = withParams(WelcomeComponent);
+        const HeaderComponentWithNavigation = withNavigation(HeaderComponent);
 
         return (
             <div className='TodoApp'>
                 <Router>
-                    <HeaderComponent/>
+                    {/* <HeaderComponent/> As with only HeaderComponent we need to refersh the page to see the changes in Header once user is logged in or logged out, it would not happen automatically once user log in or log out.*/}
+                    <HeaderComponentWithNavigation/> 
                     <Routes>
+
+                    {/* In the previous step, we disabled the menu links based on whether a user has logged in or not, but we can type in the URL and get to that right.
+                    So even though a user has not really logged in. He's able to get to the URL. To prevent it, we need to authenticate before we need to route.
+                    So until we were using the Route, right over here. What we would want to be able to do is we would want to be able to say AuthenticatedRoute. 
+                    So we create the AuthenticatedRoute component. If somebody tries to access the welcome page or the todo page, we want to make sure that 
+                    he is logged in, and only then let the user to go to the Route */}
+
                         <Route path="/" element={<LoginComponent />} />
                         <Route path="/login" element={<LoginComponentWithNavigation />} />
-                        <Route path="/welcome/:name" element={<WelcomeComponentWithParams />} />
-                        <Route path="/todos" element={<ListTodosComponent/>} />
-                        <Route path="/logout" element={<LogoutComponent/>} />
+                        <Route path="/welcome/:name" element={
+                            <AuthenticatedRoute><WelcomeComponentWithParams/></AuthenticatedRoute>}/>
+                        <Route path="/todos" element={ 
+                            <AuthenticatedRoute><ListTodosComponent/></AuthenticatedRoute>}/>
+                        <Route path="/logout" element={
+                            <AuthenticatedRoute><LogoutComponent/></AuthenticatedRoute>} />
+                            {/* Do take care of not to have any space after <AuthenticatedRoute> or before </AuthenticatedRoute> in above tags */}
                         <Route path="*" element={<ErrorComponent />} />
                         {/* We want to show the ErrorComponent when none of these components match that. You need to pass * to the path in Route. */}
                     </Routes>
@@ -35,8 +50,8 @@ class TodoApp extends Component {
 }
 
 /*
-The first thing that I would need to do to be able to use the router is, actually add it to our project. React is just the view library, it does not come with all the 
-features to build a real web application and that's where React Router comes in and gives us the features to route from one page to another.
+The first thing that I would need to do to be able to use the router is, actually add it to our project. React is just the view library, it does not come 
+with all the features to build a real web application and that's where React Router comes in and gives us the features to route from one page to another.
 
 npm add react-router-dom should download the reactor-router-dom and all its transitive dependencies including React Router.
 So, you see that all of them would be downloaded into the node modules and at the end of it, you would also see that it is added into the package.json as a dependency.
@@ -47,17 +62,22 @@ I'll rename BrowserRouter as Router because that's typically how it is used. We 
 
 class HeaderComponent extends Component {
     render() {
+
+        const isUserLoggedIn = AuthenticationService.isUserLoggedIn();
+        // console.log(isUserLoggedIn)
+
         return (
             <header>
                 <nav className="navbar navbar-expand-md navbar-dark bg-dark">
                     <div><a href="http://www.in28minutes.com" className='navbar-brand'>in28minutes</a></div>
                     <ul className="navbar-nav">
-                        <li><Link className='nav-link' to="/welcome/in28minutes">Home</Link></li>
-                        <li><Link className='nav-link' to="/todos">Todos</Link></li>
+                    {/* We need to use value, isUserLoggedIn, to enable or disable links. We need to show this link only when user is logged in. */}
+                        {isUserLoggedIn && <li><Link className='nav-link' to="/welcome/in28minutes">Home</Link></li>}
+                        {isUserLoggedIn && <li><Link className='nav-link' to="/todos">Todos</Link></li>}
                     </ul>
                     <ul className="navbar-nav navbar-collapse justify-content-end">
-                        <li><Link className='nav-link' to="/login">Login</Link></li>
-                        <li><Link className='nav-link' to="/logout">Logout</Link></li>
+                        {!isUserLoggedIn && <li><Link className='nav-link' to="/login">Login</Link></li>}
+                        {isUserLoggedIn && <li><Link className='nav-link' to="/logout" onClick={AuthenticationService.logout}>Logout</Link></li>}
                     </ul>
                 </nav>
             </header>
@@ -118,6 +138,7 @@ class LoginComponent extends Component {
 
     loginClicked() {
         if(this.state.username==='in28minutes' && this.state.password==='dummy') {
+            AuthenticationService.registerSuccessfulLogin(this.state.username, this.state.password);
             console.log("Successful with username - " + this.state.username)
             this.props.navigate(`/welcome/${this.state.username}`)
             // this.setState({showSuccessMessage: true})

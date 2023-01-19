@@ -16,12 +16,10 @@ class ListTodosComponent extends Component {
     
     /*
     React defines a pre-defined life cycle for each of these components. So when a component is being initialized, the first thing being called is the constructor.
-
     Whenever something in the component changes, we know the state in the component changes, and the view has to be updated for it
     Which method would we call? The render method would be the one which would be called and similar to that,
 
     There is one method which is called when the component is loaded for the first time, and shown on the browser.
-
     This process of actually putting the component on the browser is called mounting, and the method name is componentDidMount().
     If you hover over componentDidMount(), it says "Called immediately after the component is mounted.
 
@@ -47,7 +45,7 @@ class ListTodosComponent extends Component {
                     <table className='table'>
                         <thead>
                             <tr>
-                                <th>description</th>
+                                <th>Description</th>
                                 <th>Target Date</th>
                                 <th>Is Completed</th>
                             </tr>
@@ -60,7 +58,11 @@ class ListTodosComponent extends Component {
                             {
                                 this.state.todos.map (
                                     todo =>
-                                        <tr>
+                                        <tr key={todo.id}>
+                        {/* There is another warning which we are seeing. Each child in the list should have a unique key property.
+                        So if you click the link, you'd see that it says every child in a specific list... so in this specific list of items : everything should have a unique key.
+                        How do we do that? The way you can add a key is just by saying key is equal to todo.id...we can use the id of the todo as the key.
+                        So this would give something unique for React to keep track of this here, and if something changes. It would use this specific key as the starting point. */}
                                             <td>{todo.description}</td>
                                             <td>{todo.targetDate.toString()}</td>
                                             <td>{todo.done.toString()}</td>
