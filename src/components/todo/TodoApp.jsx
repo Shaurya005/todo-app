@@ -7,12 +7,15 @@ import ListTodosComponent from './ListTodoComponent';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import HeaderComponent, { FooterComponent } from './HeaderFooterComponent';
 import LoginComponent, { LogoutComponent } from './LoginLogoutComponent';
+import TodoComponent from './TodoComponent';
 
 class TodoApp extends Component {
     render() {
         const LoginComponentWithNavigation = withNavigation(LoginComponent);
         const WelcomeComponentWithParams = withParams(WelcomeComponent);
         const HeaderComponentWithNavigation = withNavigation(HeaderComponent);
+        const ListTodosComponentWithNavigation = withNavigation(ListTodosComponent)
+        const TodoComponentWithParamsAndNavigation = withParams(withNavigation(TodoComponent));
 
         return (
             <div className='TodoApp'>
@@ -32,10 +35,12 @@ class TodoApp extends Component {
                         <Route path="/welcome/:name" element={
                             <AuthenticatedRoute><WelcomeComponentWithParams/></AuthenticatedRoute>}/>
                         <Route path="/todos" element={ 
-                            <AuthenticatedRoute><ListTodosComponent/></AuthenticatedRoute>}/>
+                            <AuthenticatedRoute><ListTodosComponentWithNavigation/></AuthenticatedRoute>}/>
                         <Route path="/logout" element={
                             <AuthenticatedRoute><LogoutComponent/></AuthenticatedRoute>} />
                             {/* Do take care of not to have any space after <AuthenticatedRoute> or before </AuthenticatedRoute> in above tags */}
+                        <Route path="/todos/:id" element={
+                            <AuthenticatedRoute><TodoComponentWithParamsAndNavigation/></AuthenticatedRoute>} />  
                         <Route path="*" element={<ErrorComponent />} />
                         {/* We want to show the ErrorComponent when none of these components match that. You need to pass * to the path in Route. */}
                     </Routes>

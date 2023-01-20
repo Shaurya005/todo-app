@@ -132,9 +132,9 @@ There are other life cycle methods as well like componentWilUnmount and shouldCo
     }
 
     updateTodoClicked(id) {
-        let username = AuthenticationService.getLoggedInUserName();
-        console.log(id + " " + username)
+        console.log(id)
 
+        this.props.navigate(`/todos/${id}`)
         // TodoDataService.deleteTodo(username, id)
         //     .then (
         //         response => {
