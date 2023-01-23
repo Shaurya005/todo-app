@@ -1,3 +1,4 @@
+import moment from 'moment'
 import React, {Component} from 'react'
 import TodoDataService from '../../api/todo/TodoDataService'
 import AuthenticationService from './AuthenticationService'
@@ -18,6 +19,7 @@ class ListTodosComponent extends Component {
         this.deleteTodoClicked = this.deleteTodoClicked.bind(this);
         this.refreshTodos = this.refreshTodos.bind(this);
         this.updateTodoClicked = this.updateTodoClicked.bind(this)
+        this.addTodoClicked = this.addTodoClicked.bind(this)
     }
     
     /*
@@ -174,7 +176,7 @@ There are other life cycle methods as well like componentWilUnmount and shouldCo
                         How do we do that? The way you can add a key is just by saying key is equal to todo.id...we can use the id of the todo as the key.
                         So this would give something unique for React to keep track of this here, and if something changes. It would use this specific key as the starting point. */}
                                             <td>{todo.description}</td>
-                                            <td>{todo.targetDate.toString()}</td>
+                                            <td>{moment(todo.targetDate).format('YYYY-MM-DD')}</td>
                                             <td>{todo.done.toString()}</td>
                                             <td><button className='btn btn-success' onClick={() => this.updateTodoClicked(todo.id)}>Update</button></td>
                                             <td><button className='btn btn-warning' onClick={() => this.deleteTodoClicked(todo.id)}>Delete</button></td>
@@ -183,9 +185,21 @@ There are other life cycle methods as well like componentWilUnmount and shouldCo
                             }
                         </tbody>
                     </table>
+                    <div className='row'>
+                        <button className='btn btn-success' onClick={this.addTodoClicked}>Add</button>
+                    </div>
                 </div>
             </div>
         )
+    }
+
+    /*
+    There should not be id which is passed in. Because we don't know the id of the todo that it's going to be created.
+    And so the todos page to identify that it is a new todo., we will give it a id of -1.
+    */
+    addTodoClicked() {
+        console.log('create ')
+        this.props.navigate('/todos/-1')
     }
 }
 

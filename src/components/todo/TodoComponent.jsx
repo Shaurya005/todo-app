@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import moment from 'moment'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import TodoDataService from '../../api/todo/TodoDataService';
+import AuthenticationService from './AuthenticationService';
 
 class TodoComponent extends Component {
 
@@ -14,7 +16,7 @@ class TodoComponent extends Component {
 
         this.state = {
             id : this.props.params.id,
-            description : 'Learn Forms Now',
+            description : '',
             targetDate : moment(new Date()).format('YYYY-MM-DD')
             // Let's start with using moment. New Date() format we saw was not really good. So I'll start using moment which is an awesome javascript library 
             // which helps you to format dates and things like that. So I'll say .format(). and in the format, I would want to use is YYYY-MM-DD. 
@@ -23,6 +25,21 @@ class TodoComponent extends Component {
 
         this.onSubmit = this.onSubmit.bind(this)
         this.validate = this.validate.bind(this)
+    }
+
+    componentDidMount() { // Here we invoke the API to retrieve the details of a todo and connected it to the front end.
+        if(this.state.id===-1)
+            return;
+
+        let username = AuthenticationService.getLoggedInUserName();
+        TodoDataService.retrieveTodo(username, this.state.id)
+            .then(
+                responnse => this.setState({
+                    description: responnse.data.description, 
+                    targetDate: moment(responnse.data.targetDate).format('YYYY-MM-DD') // For the targetDate, we need to do the same formatting that we did earlier for targetDate.
+                                                          // We need to use the moment framework and format it to the same format.
+                    })
+            )
     }
 
     validate(values) {
@@ -43,6 +60,22 @@ class TodoComponent extends Component {
 
     onSubmit(values) {
         console.log(values); // Whatever values which we are modifying on screen, it gets populated directly into values.
+
+        let username = AuthenticationService.getLoggedInUserName();
+        let todo = {
+                id: this.state.id,
+                description: values.description,
+                targetDate: values.targetDate
+            }
+        if (this.state.id === -1) {
+            TodoDataService.createTodo(username, todo)
+            .then(() => this.props.navigate('/todos'))
+        } else {
+            TodoDataService.updateTodo(username, this.state.id, todo)
+            .then(() => this.props.navigate('/todos'))// If updateTodo service is successful, we are redirecting the user to the todos page.
+            // you need to pass in an object saying what details need to be updated. We'll pick that from the values.
+            // so we'll say id: this.state.id, description: values.description and targetDate: values.targetDate. id Is not in values so we pick this from this.state.id
+        }
     }
 
     render() {
@@ -93,7 +126,10 @@ class TodoComponent extends Component {
                         method on each of the elements, and we had to actually define the body of onChange method as well. But formik makes it all easy.*/
                         validateOnChange={false}
                         validateOnBlur={false}
-                        validate={this.validate}>
+                        validate={this.validate}
+                        enableReinitialize={true}>
+                        {/* One of the things we need to do is to enable re-initialization on formik, so what we would need to do is enableReInitialize = true. By default, It's turned off. That's why the form does not initialize. */}
+                        
                         {/* We can see that as soon as I change the values, the validation is kicking in and the validation is also active as soon as I blur something.
                         So if I do a blur, also the same thing would happen. What we need to do is disable both of those. Formik by default enables validation onBlur and validation onChange.
                         So what we'll do is validateOnChange = false, and validateOnBlur = false. And now you see that even if I enter an error value, until we click Save, the validation doesn't happen.
