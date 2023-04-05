@@ -77,7 +77,17 @@ class WelcomeComponent extends Component
     handleError(error) {
         console.log( error.response)
 
-        this.setState ({welcomeMessage : error.response.data.message})
+        /*
+        You can see that we're trying to pick up the data from the errorMessage and that's not happening because error.response is not really defined.
+        One of the important things to realize is sometimes you might not even get a response back when there is an error.
+        So we'll improve the way we are handling the error in here.
+        */
+        let errorMessage = '';
+        if(error.message)
+            errorMessage += error.message;
+         if(error.response && error.response.data)
+            errorMessage += error.response.data;
+        this.setState ({welcomeMessage : errorMessage})
     }
 }
 

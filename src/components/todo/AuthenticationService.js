@@ -1,7 +1,10 @@
+import axios from "axios";
+
 class AuthenticationService {
     registerSuccessfulLogin (username, password) {
         console.log('registerSuccessfulLogin')
         sessionStorage.setItem('authenticatedUser', username)
+       // this.setupAxiosInterceptors()
     }
 
     /*
@@ -25,6 +28,23 @@ class AuthenticationService {
         if (user === null) return '';
         return user;
     }
+
+    // setupAxiosInterceptors() {
+    //     let username = 'in28minutes';
+    //     let password = 'dummy';
+
+    //     let basicAuthHeader = 'Basic ' + window.btoa(username + ":" + password)
+
+    //     axios.interceptors.request.use(
+    //         (config) => {
+    //             if(this.isUserLoggedIn)
+    //                 config.headers.authorization = basicAuthHeader
+                
+    //             return config;
+    //         }
+            
+    //     )
+    // }
 }
 
 export default new AuthenticationService // For React Components we export the class directly. For Helper services, we export an instrance of the class - an object.

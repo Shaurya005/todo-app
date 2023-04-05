@@ -9,7 +9,7 @@ class AuthenticatedRoute extends Component
         /*
         So if AuthenticatedUser.isUserLoggedIn, then we would want to redirect him to the <Route/>.
 
-        Now when we change <Route/> to <AuthenticatedRoute/>, what would happen is all the parameters would be passed to <AuthenticateedRoute> now which were 
+        Now when we change <Route/> to <AuthenticatedRoute/>, what would happen is all the parameters would be passed to <AuthenticatedRoute> now which were 
         previously being passed to <Route/>. So we would want to take all those props and also pass them to the <Route/> here. How do we do that?
 
         The way we can do that is by using something called {...this.props} with <Route/> tag. What we are using in here is called a spread operator. 

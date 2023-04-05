@@ -75,7 +75,6 @@ There are other life cycle methods as well like componentWilUnmount and shouldCo
     So componentWillUnmount is called just before a component is unmounted, a component is removed from the view.
 
     So if there are things that you have allocated for the component - resources or things you can unallocate them in this specific method.
-    The last interesting method is something called shouldComponentUpdate. And it accepts actually two parameters - nextProps, and nextState.
     */
 
     shouldComponentUpdate(nextProps, nextState) {

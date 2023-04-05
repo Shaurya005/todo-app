@@ -28,8 +28,10 @@ class TodoComponent extends Component {
     }
 
     componentDidMount() { // Here we invoke the API to retrieve the details of a todo and connected it to the front end.
-        if(this.state.id===-1)
+        //if(this.state.id===-1) {
+        if(this.state.id == -1) {
             return;
+        }
 
         let username = AuthenticationService.getLoggedInUserName();
         TodoDataService.retrieveTodo(username, this.state.id)
