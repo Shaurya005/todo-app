@@ -2,10 +2,6 @@ import React, {Component} from 'react'
 import HelloWorldService from '../../api/todo/HelloWorldService';
 import {Link} from 'react-router-dom'
 
-/*
-In the previous step we hard coded in28minutes in the WelcomeComponent, and that's not really good.
-How can we pass the fact that in28minutes has logged in from from the LoginComponent to the Welcome Component.
-*/
 class WelcomeComponent extends Component 
 {
     constructor(props) {
@@ -18,20 +14,7 @@ class WelcomeComponent extends Component
         this.handleSuccessfulResponse = this.handleSuccessfulResponse.bind(this)
         this.handleError = this.handleError.bind(this)
     }
-    /* 
-    So we need to go to the WelcomeComponent and add the link in there to go to todos component.
-    Let's try defining an a href, and say I want to route to todo. So a is typically the usual HTML way of doing it. I would go to the welcome/in28minutes and over here,
-    If I click this link on here, you'd see that the entire page gets refreshed. So you can see that the complete page gets refreshed.
-    However you'd see that when I go from login to welcome page and the entire page is not refreshed.
-    Only the specific part of the page is refreshed. You can actually clearly see this once we add the menu and the footer later. For now.
-
-    The most important thing to note is the fact that when you actually add a normal a href, the entire page gets refreshed. 
-    And when you're doing single page applications, you don't want the entire page to get refreshed, and that's where Link comes in. 
-    So you can add a link where only that specific component will be replaced, with whatever is pointed to by the specific component. 
-    The attribute name is not href, it "to" here i.e. <Link to>
-    */
     render() {
-        // How can we add a link around here. So we need to use something called Link, which also is defined in the react-router-dom.
         return  <>
                     <h1>Welcome!</h1>
                     <div className='container'> 
@@ -46,16 +29,6 @@ class WelcomeComponent extends Component
     }
 
     retrieveWelcomeMessage() {
-        // HelloWorldService.executeHelloWorldService()
-        // .then(response => {
-        //     this.handleSuccessfulResponse(response)
-        // })
-
-        // HelloWorldService.executeHelloWorldBeanService()
-        // .then(response => {         
-        //     this.handleSuccessfulResponse(response)
-        // })
-
         HelloWorldService.executeHelloWorldPathVariableService(this.props.params.name)
         .then(response => {
             this.handleSuccessfulResponse(response)
@@ -77,11 +50,6 @@ class WelcomeComponent extends Component
     handleError(error) {
         console.log( error.response)
 
-        /*
-        You can see that we're trying to pick up the data from the errorMessage and that's not happening because error.response is not really defined.
-        One of the important things to realize is sometimes you might not even get a response back when there is an error.
-        So we'll improve the way we are handling the error in here.
-        */
         let errorMessage = '';
         if(error.message)
             errorMessage += error.message;
