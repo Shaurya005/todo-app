@@ -10,9 +10,9 @@ class HeaderComponent extends Component {
         return (
             <header>
                 <nav className="navbar navbar-expand-md navbar-dark bg-dark">
-                    <div><a href="http://www.in28minutes.com" className='navbar-brand'>in28minutes</a></div>
+                    <div><a href="http://www.clover.com" className='navbar-brand'>CLover POS</a></div>
                     <ul className="navbar-nav">
-                        {isUserLoggedIn && <li><Link className='nav-link' to="/welcome/in28minutes">Home</Link></li>}
+                        {isUserLoggedIn && <li><Link className='nav-link' to="/welcome/Clover">Home</Link></li>}
                         {isUserLoggedIn && <li><Link className='nav-link' to="/todos">Todos</Link></li>}
                     </ul>
                     <ul className="navbar-nav navbar-collapse justify-content-end">
@@ -29,7 +29,7 @@ class FooterComponent extends Component {
     render() {
         return (
             <footer className='footer'>
-                <span className='text-muted'>All Rights reserved 2018 @in28minutes</span>
+                <span className='text-muted'>All Rights reserved 2023 @Clover</span>
             </footer>
         )
     }
